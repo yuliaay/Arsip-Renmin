@@ -38,24 +38,41 @@ if(!isset($_SESSION['user'])) {
 
 $error ='';
 //mengecek apakah data sudah terisi dan tidak kosong 
-if(isset($_POST['submit'])){
-  $no_surat = $_POST['no_surat'];
-  $tgl_surat = $_POST['tgl_surat'];
-  $tujuan = $_POST['tujuan'];
-  $isi_surat = $_POST['isi_surat'];
-  $jenis_surat = $_POST['jenis_surat'];
-  $no_agenda = $_POST['no_agenda'];
-  $keterangan = $_POST['keterangan'];
+if(isset($_POST['submit']) && isset($_FILES['file_surat_keluar'])){
+  $no_surat = htmlspecialchars($_POST['no_surat']);
+  $tgl_surat = htmlspecialchars($_POST['tgl_surat']);
+  $tujuan = htmlspecialchars($_POST['tujuan']);
+  $isi_surat = htmlspecialchars($_POST['isi_surat']);
+  $jenis_surat = htmlspecialchars($_POST['jenis_surat']);
+  $no_agenda = htmlspecialchars($_POST['no_agenda']);
+  $keterangan = htmlspecialchars($_POST['keterangan']);
+  $file_surat_keluar = upload_surat_keluar();
 
 if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
  
-  if(tambah_surat_keluar($no_surat, $tgl_surat, $tujuan, $isi_surat, $jenis_surat, $no_agenda, $keterangan)){ 
-      $error = 'Data Berhasil ditambahkan';
+  if(tambah_surat_keluar($no_surat, $tgl_surat, $tujuan, $isi_surat, $jenis_surat, $no_agenda, $keterangan, $file_surat_keluar)){ 
+   tambah_notifikasi_sk();
+   echo "
+      <script>
+          alert('Data berhasil ditambahkan');
+          document.location.href = 'lihatSuratKeluar.php';
+       </script>
+      ";
   }else { 
-     $error = 'Ada Masalah saat Menambahkan data';
+     echo "
+      <script>
+          alert('Ada masalah saat menambahkan data');
+          
+       </script>
+      ";
   }
 }else{ 
-  $error = 'No surat dan Isi Wajib diisi';
+      echo "
+      <script>
+          alert('nomor surat dan perihal wajib diisi');
+          
+       </script>
+      ";
 
   }
 }
@@ -94,39 +111,39 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
           </header>
 
       
-         <form class= "formSM" method="post" action="inputSuratKeluar.php">
+         <form class= "formSM" method="post" action="inputSuratKeluar.php" enctype="multipart/form-data">
           <div class="form-group row">
             <label for="no_surat" class="col-sm-2 col-form-label">Nomor Surat</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="no_surat" placeholder="Nomor Surat">
+              <input type="text" class="form-control" name="no_surat" placeholder="Nomor Surat" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="tgl_surat" class="col-sm-2 col-form-label">Tanggal Surat</label>
             <div class="col-sm-10">
-              <input type="date" class="form-control" name="tgl_surat" placeholder="Tanggal Surat">
+              <input type="date" class="form-control" name="tgl_surat" placeholder="Tanggal Surat" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="asal_surat" class="col-sm-2 col-form-label">Tujuan Surat</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="tujuan" placeholder="Tujuan Surat">
+              <input type="text" class="form-control" name="tujuan" placeholder="Tujuan Surat" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="isi_surat" class="col-sm-2 col-form-label">Isi Surat</label>
             <div class="col-sm-10">
-              <textarea class="form-control" name="isi_surat" rows="3"></textarea>
+              <textarea class="form-control" name="isi_surat" rows="3" required></textarea>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="jenis_surat" class="col-sm-2 col-form-label">Jenis Surat</label>
             <div class="col-sm-10">
-              <select name="jenis_surat" class="form-control">
+              <select name="jenis_surat" class="form-control" required>
                 <option>Nota Dinas</option> 
               </select>
             </div>
@@ -135,7 +152,7 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
           <div class="form-group row">
             <label for="no_agenda" class="col-sm-2 col-form-label">Nomor Agenda</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="no_agenda" placeholder="Nomor Agenda">
+              <input type="number" class="form-control" name="no_agenda" placeholder="Nomor Agenda" required>
             </div>
           </div>
 
@@ -145,35 +162,24 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
               <input type="text" class="form-control" name="keterangan" placeholder="keterangan">
             </div>
           </div>
+
+
+           <div class="form-group row">
+            <label for="pakaian" class="col-sm-2 col-form-label">File Surat</label>
+            <div class="col-sm-10">
+              <input type="file" class="form-control" name="file_surat_keluar" placeholder="Surat Keluar" >
+            </div>
+          </div>
+          
           
            <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal" id="btnsve">
-            Simpan Data
-          </button>
+        <Button type="submit" class="btn btn-primary pull-right"  name="submit" value="Simpan Data" id="btnsve">Simpan Data</Button>
 
           </br>
         </br>
           <div> <?=$error ?> </div> 
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <input type="submit" class="btn btn-primary"  name="submit" value="submit">
-                </div>
-              </div>
-            </div>
-          </div>   
+
+
                   </form>
                 </div>
               </div>
@@ -183,6 +189,8 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
           </nav>
             
           </div>
+
+          <?php require_once 'footer.php'; ?>
 
 
     <!-- Optional JavaScript -->

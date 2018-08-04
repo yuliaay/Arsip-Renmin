@@ -8,10 +8,15 @@ if(!isset($_SESSION['user'])) {
 }
 
 if(isset($_GET['id'])){
-	if(hapus_data($_GET['id'])){
-		echo 'Data Berhasil Dihapus';
+	if(hapus_data_agenda($_GET['id'])){
+		header('Location: lihatAgenda.php');
 	 }
-	else echo 'gagal menghapus data'; 
+	else echo "
+      <script>
+          alert('Gagal Menghapus data');
+          document.location.href = 'lihatAgenda.php';
+       </script>
+      ";
 }
 
 ?>

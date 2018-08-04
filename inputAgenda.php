@@ -38,26 +38,29 @@ if(!isset($_SESSION['user'])) {
 
 $error ='';
 //mengecek apakah data sudah terisi dan tidak kosong 
-if(isset($_POST['submit'])){
-  $nomor = $_POST['nomor'];
-  $tgl_surat = $_POST['tgl_surat'];
-  $asal_surat = $_POST['asal_surat'];
-  $tgl_terima = $_POST['tgl_terima'];
-  $perihal = $_POST['perihal'];
-  $giat = $_POST['giat'];
-  $tgl_giat = $_POST['tgl_giat'];
-  $tempat = $_POST['tempat'];
-  $pakaian = $_POST['pakaian'];
+if(isset($_POST['submit']) && isset($_FILES['file_agenda'])){
+  $nomor = htmlspecialchars($_POST['nomor']);
+  $tgl_surat = htmlspecialchars($_POST['tgl_surat']);
+  $asal_surat = htmlspecialchars($_POST['asal_surat']);
+  $tgl_terima = htmlspecialchars($_POST['tgl_terima']);
+  $perihal = htmlspecialchars($_POST['perihal']);
+  $giat = htmlspecialchars($_POST['giat']);
+  $tgl_giat = htmlspecialchars($_POST['tgl_giat']);
+  $tempat = htmlspecialchars($_POST['tempat']);
+  $pakaian = htmlspecialchars($_POST['pakaian']);
+  $uploader = htmlspecialchars($_POST['uploader']);
+  $file_agenda = upload_agenda();
 
 if(!empty(trim($nomor)) && !empty(trim($perihal))){
  
-  if(tambah_agenda($nomor, $tgl_surat, $asal_surat, $tgl_terima, $perihal, $giat, $tgl_giat, $tempat, $pakaian)){ 
-    echo "
-      <script>
-          alert('Data berhasil ditambahkan');
-          
-       </script>
-      ";
+  if(tambah_agenda($nomor, $tgl_surat, $asal_surat, $tgl_terima, $perihal, $giat, $tgl_giat, $tempat, $pakaian, $uploader, $file_agenda)){ 
+    tambah_notifikasi_ag();
+     echo "
+       <script>
+           alert('Data berhasil ditambahkan');
+           document.location.href = 'lihatAgenda.php';
+        </script>
+       ";
   }else { 
       echo "
       <script>
@@ -70,7 +73,6 @@ if(!empty(trim($nomor)) && !empty(trim($perihal))){
       echo "
       <script>
           alert('nomor surat dan perihal wajib diisi');
-          
        </script>
       ";
 
@@ -111,32 +113,35 @@ if(!empty(trim($nomor)) && !empty(trim($perihal))){
           </header>
 
       
-         <form class= "formSM" method="post" action="inputAgenda.php">
+         <form class= "formSM" method="post" action="inputAgenda.php" enctype="multipart/form-data">
+
+          
+
           <div class="form-group row">
             <label for="nomor" class="col-sm-2 col-form-label">Nomor</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="nomor" placeholder="Nomor">
+              <input type="number" class="form-control" name="nomor" placeholder="Nomor" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="tgl_surat" class="col-sm-2 col-form-label">Tanggal Surat</label>
             <div class="col-sm-10">
-              <input type="date" class="form-control" name="tgl_surat" placeholder="Tanggal Surat">
+              <input type="date" class="form-control" name="tgl_surat" placeholder="Tanggal Surat" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="asal_surat" class="col-sm-2 col-form-label">Asal Surat</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="asal_surat" placeholder="Tujuan Surat">
+              <input type="text" class="form-control" name="asal_surat" placeholder="Tujuan Surat" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="tgl_terima" class="col-sm-2 col-form-label">Tanggal Terima</label>
             <div class="col-sm-10">
-              <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Surat">
+              <input type="date" class="form-control" name="tgl_terima" placeholder="Tanggal Surat" required>
             </div>
           </div>
 
@@ -152,67 +157,50 @@ if(!empty(trim($nomor)) && !empty(trim($perihal))){
           <div class="form-group row">
             <label for="giat" class="col-sm-2 col-form-label">Kegiatan</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="giat" placeholder="Nomor Agenda">
+              <input type="text" class="form-control" name="giat" placeholder="Kegiatan" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="tgl_giat" class="col-sm-2 col-form-label">Tanggal Kegiatan</label>
             <div class="col-sm-10">
-              <input type="date" class="form-control" name="tgl_giat" placeholder="Tanggal Kegiatan">
+              <input type="date" class="form-control" name="tgl_giat" placeholder="Tanggal Kegiatan" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="tempat" class="col-sm-2 col-form-label">Tempat</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="tempat" placeholder="Tempat Kegiatan">
+              <input type="text" class="form-control" name="tempat" placeholder="Tempat Kegiatan" required>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="pakaian" class="col-sm-2 col-form-label">Pakaian</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="pakaian" placeholder="pakaian">
+              <input type="text" class="form-control" name="pakaian" placeholder="pakaian" required>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
+          <input type="hidden" name="uploader" value="<?= $_SESSION['user'] ?>">
+
+           <div class="form-group row">
+            <label for="pakaian" class="col-sm-2 col-form-label">File Surat</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="keterangan" placeholder="Keterengan">
+              <input type="file" class="form-control" name="file_agenda" placeholder="Agenda" >
             </div>
+
+
           </div>
           
            <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary pull-right" id="btnsve" data-toggle="modal" data-target="#exampleModal">
-            Simpan Data
-          </button>
+        <button type="submit" class="btn btn-primary pull-right"  name="submit" value="Simpan Data" id="btnsve">Simpan Data</button>
 
           </br>
         </br>
-          <div> <?=$error ?> </div>
+          
            
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  ...
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <input type="submit" class="btn btn-primary"  name="submit" value="submit">
-                </div>
-              </div>
-            </div>
-          </div>   
+          
                   </form>
                 </div>
               </div>
@@ -222,6 +210,8 @@ if(!empty(trim($nomor)) && !empty(trim($perihal))){
           </nav>
             
           </div>
+
+          <?php require_once 'footer.php'; ?>
 
 
     <!-- Optional JavaScript -->
