@@ -239,7 +239,7 @@ $pages = ceil($total/$perPage);
                     || $_SESSION['status'] == 4
                  ): ?>
                   <a href="detailSuratKeluar.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   <a href="disposisiSuratKeluar.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
+                   <a href="lembardisposisi.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
                    
                   <?php endif;  ?>
                 </tr>

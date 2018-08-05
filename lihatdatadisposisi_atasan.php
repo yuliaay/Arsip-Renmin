@@ -6,20 +6,19 @@ if(!isset($_SESSION['user'])) {
   header('Location: login.php');
 }
 
-
 $perPage = 9;
 $page = isset($_GET["halaman"]) ? (int)$_GET["halaman"] : 1;
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
-$articles = "SELECT * FROM surat_masuk LIMIT $start, $perPage";
+$articles = "SELECT * FROM disposisi LIMIT $start, $perPage";
 
-$result = mysqli_query($link,"SELECT * FROM surat_masuk");
+$result = mysqli_query($link,"SELECT * FROM disposisi");
 $result2 = mysqli_query($link,$articles);
 $total = mysqli_num_rows($result);
 
 $pages = ceil($total/$perPage);
 
-
+?>
 ?>
 <!doctype html>
 <html lang="en">
@@ -205,32 +204,23 @@ $pages = ceil($total/$perPage);
             <table class="table table-hover">
               <thead>
                   <tr>
-                    <th scope="col">No. Surat</th>
-                    <th scope="col">Tanggal Surat</th>
-                    <th scope="col">Asal Surat</th>
-                    <th scope="col">Tanggal Terima</th>
-                    <th scope="col">Isi Surat</th>
-                    <th scope="col">Jenis Surat</th>
-                    <th scope="col">Nomor Agenda</th>
-                    <th scope="col">Disposisi</th>
-                    <th scope="col">Tanggal Ekpedisi</th>
+                    <th scope="col">Tujuan Disposisi</th>
+                    <th scope="col">Isi Disposisi</th>
+                    <th scope="col">Batas Waktu</th>
+                    <th scope="col">Catatan</th>
                     <th scope="col">Action</th>
                   </tr>
               </thead>
               <tbody>
 
-              <?php $articles = tampilkan_surat_masuk(); ?>
+              <?php $articles = tampilkan_disposisi_atasan(); ?>
               <?php while($row = mysqli_fetch_assoc($result2)): ?>
+              	<?= print_r($row) ?>
                 <tr>
-                  <td><?=  $row ['no_surat'] ?></td>
-                  <td><?=  $row ['tgl_surat'] ?></td>
-                  <td><?=  $row ['asal_surat'] ?></td>
-                  <td><?=  $row ['tgl_terima'] ?></td>
-                  <td><?=  $row ['isi_surat'] ?></td>
-                  <td><?=  $row ['jenis_surat'] ?></td>
-                  <td><?=  $row ['no_agenda'] ?></td>
-                  <td><?=  $row ['disposisi'] ?></td>
-                  <td><?=  $row ['tgl_ekspedisi'] ?></td>
+                  <td><?=  $row ['username'] ?></td>
+                  <td><?=  $row ['isi_disposisi'] ?></td>
+                  <td><?=  $row ['batas_waktu'] ?></td>
+                  <td><?=  $row ['catatan'] ?></td>
                   <td>
                    <?php if($_SESSION['status'] == 1 || $_SESSION['status'] == 0 
                  ): ?>
@@ -251,72 +241,6 @@ $pages = ceil($total/$perPage);
             </table>
           </nav>
          </div>
-        <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"><strong>Edit Data</strong></h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                      <label for="formGroupExampleInput">Nomor Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nomor Surat" name="no_surat">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Tanggal Surat</label>
-                      <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="Tanggal Surat" name="tgl_surat">
-                    </div>
-                     <div class="form-group">
-                      <label for="formGroupExampleInput">Asal Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Asal Surat" name="asal_surat">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Tanggal Terima</label>
-                      <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="Tanggal Terima" name="tgl_terima">
-                    </div>
-                   <div class="form-group">
-                      <label for="formGroupExampleInput">Isi Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Isi Surat" name="isi_surat">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Jenis Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Jenis Surat" name="jenis_surat">
-                    </div>
-                     <div class="form-group">
-                      <label for="formGroupExampleInput">Nomor Agenda</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nomor Agenda" name="no_agenda">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Disposisi</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Disposisi" name="disposisi">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Tanggal Ekspedisi</label>
-                      <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="Tanggal Ekspedisi" name="tgl_ekspedisi">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                  <input type="submit" class="btn btn-primary"  name="submit" value="Simpan">
-                </div>
-              </div>
-            </div>
-          </div>   
-
-        <div class="modal fade" id="hapusmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <h5><strong>Anda Yakin Ingin Mengapus Data?</strong></h5>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                  <input type="submit" class="btn btn-primary"  name="submit" value="Hapus">
-                </div>
-              </div>
-            </div>
-          </div>   
 
          <nav aria-label="..." class="pagi">
           

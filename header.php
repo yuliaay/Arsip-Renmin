@@ -40,7 +40,7 @@ if(!isset($_SESSION['user'])) {
     padding: 10px 16px;
     text-decoration: none;
     display: block;
-    
+    font-size: 11px;
 }
 
 /* Change color of dropdown links on hover */
@@ -66,8 +66,6 @@ if(!isset($_SESSION['user'])) {
 .navhead {
   margin-left: 20%;
 }
-
-
 
 
 
@@ -100,16 +98,16 @@ if(!isset($_SESSION['user'])) {
                   <div class="dropdown pull-right">
                   <li class="fixed-width"> 
                    <button class="dropbtn "><span class="glyphicon glyphicon-bell" id="notif"></span></button>
-                         <span class="label label-success"><?php echo "$count"; ?></span>
+                         <span class="label label-success">  <?php echo "$count"; ?></span>
                           <div class="dropdown-content">
-                            <?php 
+                            <?php  
                             foreach ($data as $value) {
                               # code...
                           ?>
                             <?php if($value['read_n'] == '1'){ 
                               $id = $value['id'];
                               ?>
-                            <a href="?notf=<?php echo $value['id']; ?>" class="alert-danger"> <?php echo $value['title']; ?> </a>
+                            <a href="?notf=<?php echo $value['id']; ?>" class="alert-danger"> Anda Menerima 1 <?php echo $value['title']; ?> Baru </a>
                           <?php } }?> 
                       </div>
                   </li>

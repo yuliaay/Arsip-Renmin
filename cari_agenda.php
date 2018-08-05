@@ -161,13 +161,18 @@ if(isset($_GET['cari'])){
                   <div class="dropdown pull-right">
                   <li class="fixed-width"> 
                    <button class="dropbtn "><span class="glyphicon glyphicon-bell" id="notif"></span></button>
-                         <span class="label label-success">3</span>
+                         <span class="label label-success">  <?php echo "$count"; ?></span>
                           <div class="dropdown-content">
-                            <a href="#">Link 1</a>
-                            <a href="#">Link 2</a>
-                            <a href="#">Link 3</a>
-                          </div>
-                       </a>
+                            <?php  
+                            foreach ($data as $value) {
+                              # code...
+                          ?>
+                            <?php if($value['read_n'] == '1'){ 
+                              $id = $value['id'];
+                              ?>
+                            <a href="?notf=<?php echo $value['id']; ?>" class="alert-danger"> Anda Menerima 1 <?php echo $value['title']; ?> Baru </a>
+                          <?php } }?> 
+                      </div>
                   </li>
                 </div>
                </ul>

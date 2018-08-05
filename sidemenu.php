@@ -150,8 +150,8 @@ if(!isset($_SESSION['user'])) {
 	                <span class="label label-success pull-right hidden-sm hidden-xs"></span>
 	              </a>
 	              <ul class="collapse collapseable" id="collapse-disposisi">
-	                <li><a href="new-article.php">Entry Baru</a></li>
-	                <li><a href="articles.php"> Lihat Data</a></li>
+	                <li><a href="lembardisposisi_atasan.php">Entry Baru</a></li>
+	                <li><a href="lihatdatadisposisi_atasan.php"> Lihat Data</a></li>
 	              </ul>
 	            </li>
 

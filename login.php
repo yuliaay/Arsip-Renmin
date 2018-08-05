@@ -24,8 +24,10 @@ if(isset($_POST['submit'])){
 
 		if(cek_data($nama, $pass)){
 			$_SESSION['user'] = $nama;
+			$_SESSION['id'] = getuserId($nama);
 			$_SESSION['status'] = getUserLevel($nama);
 			header('Location: index.php');
+			die($_SESSION['id']);
 		}else {
 			$error = $error_msg[0];
 		}

@@ -115,8 +115,8 @@ if(isset($_POST['submit'])){
           <nav id="navbar-example2" class="navbar navbar-light bg-light">
           <header>
             <p class="page_title"> Edit User </p> 
-            <a href="javascript:window.history.go(-1);" class="btn btn-primary pull-right"> kembali </a> 
-          </header>
+            <!--<a href="javascript:window.history.go(-1);" class="btn btn-primary pull-right"> kembali </a> 
+          </header> --> 
 
       
          <form class= "formSM" method="post" action="editUser.php">

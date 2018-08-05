@@ -46,11 +46,12 @@ if(isset($_POST['submit']) && isset($_FILES['file_surat_keluar'])){
   $jenis_surat = htmlspecialchars($_POST['jenis_surat']);
   $no_agenda = htmlspecialchars($_POST['no_agenda']);
   $keterangan = htmlspecialchars($_POST['keterangan']);
+  $uploader = htmlspecialchars($_POST['uploader']);
   $file_surat_keluar = upload_surat_keluar();
 
 if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
  
-  if(tambah_surat_keluar($no_surat, $tgl_surat, $tujuan, $isi_surat, $jenis_surat, $no_agenda, $keterangan, $file_surat_keluar)){ 
+  if(tambah_surat_keluar($no_surat, $tgl_surat, $tujuan, $isi_surat, $jenis_surat, $no_agenda, $keterangan, $uploader, $file_surat_keluar)){ 
    tambah_notifikasi_sk();
    echo "
       <script>
@@ -162,6 +163,8 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
               <input type="text" class="form-control" name="keterangan" placeholder="keterangan">
             </div>
           </div>
+
+          <input type="hidden" name="uploader" value="<?= $_SESSION['user'] ?>">
 
 
            <div class="form-group row">

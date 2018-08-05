@@ -25,4 +25,17 @@ function getUserLevel($username) {
 	
 }
 
+function getUserId($username) {
+	global $link;
+	$query = "SELECT id FROM users WHERE username = '$username'";
+
+	if ($result = $link->query($query)) {
+		if($result->num_rows > 0) {
+			$obj = $result->fetch_object();
+			return $obj->id;
+		}
+	}
+	
+}
+
 ?>

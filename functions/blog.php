@@ -7,22 +7,27 @@ function escape($data){
 	return mysqli_real_escape_string($link,$data);
 }
 
-function tambah_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_surat, $jenis_surat, $no_agenda, $disposisi, $tgl_ekspedisi, $file_surat_masuk){
+function tambah_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_surat, $jenis_surat, $no_agenda, $disposisi, $tgl_ekspedisi ,$uploader, $file_surat_masuk){
 	$isi_surat = escape($isi_surat);
 	$disposisi = escape($disposisi);
 	
-	$query = "INSERT INTO surat_masuk (no_surat, tgl_surat, asal_surat, tgl_terima, isi_surat, jenis_surat, no_agenda, disposisi, tgl_ekspedisi, file_surat_masuk) VALUES ('$no_surat', '$tgl_surat', '$asal_surat', '$tgl_terima', '$isi_surat', '$jenis_surat', '$no_agenda', '$disposisi', '$tgl_ekspedisi', '$file_surat_masuk')";
+	$query = "INSERT INTO surat_masuk (no_surat, tgl_surat, asal_surat, tgl_terima, isi_surat, jenis_surat, no_agenda, disposisi, tgl_ekspedisi, uploader, file_surat_masuk) VALUES ('$no_surat', '$tgl_surat', '$asal_surat', '$tgl_terima', '$isi_surat', '$jenis_surat', '$no_agenda', '$disposisi', '$tgl_ekspedisi','$uploader', '$file_surat_masuk')";
 	return run($query);
 }
 
+function tambah_disposisi_atasan($id_surat, $id_user, $tujuan, $isi, $batas_waktu, $catatan) {
+  $id_surat = escape($id_surat);
+
+  $query = "INSERT INTO disposisi (id_surat, id_user, kpd_yth, isi_disposisi, batas_waktu, catatan) VALUES ('$id_surat', '$id_user', '$tujuan', '$isi', '$batas_waktu', '$catatan')";
+  return run($query);
+}
 
 
-function tambah_surat_keluar($no_surat, $tgl_surat, $tujuan,  $isi_surat, $jenis_surat, $no_agenda, $keterangan, $file_surat_keluar){
+function tambah_surat_keluar($no_surat, $tgl_surat, $tujuan,  $isi_surat, $jenis_surat, $no_agenda, $keterangan, $uploader, $file_surat_keluar){
 	$isi_surat = escape($isi_surat);
 	$keterangan = escape($keterangan);
 	
-	$q1 = "INSERT INTO surat_keluar (no_surat, tgl_surat, tujuan, isi_surat, jenis_surat, no_agenda, keterangan, file_surat_keluar) VALUES ('$no_surat', '$tgl_surat', '$tujuan', '$isi_surat', '$jenis_surat', '$no_agenda', '$keterangan', '$file_surat_keluar')";
-  $q2 = "INSERT INTO notifications (title, read_n) values ('Surat Keluar','1')";
+	$q1 = "INSERT INTO surat_keluar (no_surat, tgl_surat, tujuan, isi_surat, jenis_surat, no_agenda, keterangan, uploader, file_surat_keluar) VALUES ('$no_surat', '$tgl_surat', '$tujuan', '$isi_surat', '$jenis_surat', '$no_agenda', '$keterangan','$uploader', '$file_surat_keluar')";
 	return run($q1);
 }
 
@@ -120,6 +125,15 @@ function tampilkan_perid_user($id){
 	$query = "SELECT * FROM users WHERE id=$id";
 	return result($query);
 }
+
+function tampilkan_disposisi_atasan(){
+  $query = "SELECT * FROM disposisi, users WHERE disposisi.id_user = users.id";
+  global $link;
+  if($result = mysqli_query($link, $query)) {
+    return $result;
+  }
+}
+
 
 function tampilkan_perid_suratkeluar($id){
 	$query = "SELECT * FROM surat_keluar WHERE id=$id";

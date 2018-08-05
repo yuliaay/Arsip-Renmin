@@ -48,11 +48,12 @@ if(isset($_POST['submit']) && isset($_FILES['file_surat_masuk'])){
   $no_agenda = htmlspecialchars($_POST['no_agenda']);
   $disposisi = htmlspecialchars($_POST['disposisi']);
   $tgl_ekspedisi = htmlspecialchars($_POST['tgl_ekspedisi']);
+  $uploader = htmlspecialchars($_POST['uploader']);
   $file_surat_masuk = upload_surat_masuk();
 
 if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
  
-  if(tambah_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_surat, $jenis_surat, $no_agenda, $disposisi, $tgl_ekspedisi, $file_surat_masuk)){ 
+  if(tambah_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_surat, $jenis_surat, $no_agenda, $disposisi, $tgl_ekspedisi, $uploader, $file_surat_masuk)){ 
     tambah_notifikasi_sm();
          echo "
       <script>
@@ -178,6 +179,7 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
             </div>
           </div>
 
+          <input type="hidden" name="uploader" value="<?= $_SESSION['user'] ?>">
 
            <div class="form-group row">
             <label for="pakaian" class="col-sm-2 col-form-label">File Surat</label>
