@@ -11,9 +11,9 @@ $page = isset($_GET["halaman"]) ? (int)$_GET["halaman"] : 1;
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
 
-$articles = "SELECT * FROM agenda LIMIT $start, $perPage";
+$articles = "SELECT * FROM agenda ORDER BY id DESC LIMIT $start, $perPage";
 
-$result = mysqli_query($link,"SELECT * FROM agenda");
+$result = mysqli_query($link,"SELECT * FROM agenda ORDER BY id DESC");
 $result2 = mysqli_query($link,$articles);
 $total = mysqli_num_rows($result);
 
@@ -251,17 +251,16 @@ $pages = ceil($total/$perPage);
                    <?php if($_SESSION['status'] == 1
                     || $_SESSION['status'] == 0 
                  ): ?>
-                   <a href="editAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
-                   <a href="hapusAgenda.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
-                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
+                   <a href="editAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-xs" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
+                   <a href="hapusAgenda.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger btn-xs" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
+                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-xs" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
                   <?php endif;  ?>
 
                    <?php if($_SESSION['status'] == 2
                     || $_SESSION['status'] == 4
                  ): ?>
-                  <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   <a href="lembardisposisi.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
-                   
+                  <a href="lembardisposisi.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-xs" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
+                  <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-xs" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
                   <?php endif;  ?>
                  </td>
                 </tr>

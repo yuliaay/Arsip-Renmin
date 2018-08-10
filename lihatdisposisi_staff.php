@@ -10,16 +10,16 @@ $perPage = 9;
 $page = isset($_GET["halaman"]) ? (int)$_GET["halaman"] : 1;
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
-$articles = "SELECT * FROM surat_keluar ORDER BY id DESC LIMIT  $start, $perPage";
+$articles = "SELECT * FROM share_dspss, dispss, users, disposisi_staff WHERE share_dspss.kpd_yth = users.id AND share_dspss.id_disposisi = dispss.id_dspss  AND share_dspss.id_dspss2 = disposisi_staff.id_disposisi  ORDER BY id DESC LIMIT $start, $perPage";
 
-$result = mysqli_query($link,"SELECT * FROM surat_keluar ORDER BY id DESC");
+$result = mysqli_query($link,"SELECT * FROM share_dspss, dispss, users, disposisi_staff WHERE share_dspss.kpd_yth = users.id AND share_dspss.id_disposisi = dispss.id_dspss  AND share_dspss.id_dspss2 = disposisi_staff.id_disposisi ORDER BY id DESC");
 $result2 = mysqli_query($link,$articles);
 $total = mysqli_num_rows($result);
 
 $pages = ceil($total/$perPage);
 
 ?>
-
+?>
 <!doctype html>
 <html lang="en">
   <style type="text/css">
@@ -46,8 +46,7 @@ $pages = ceil($total/$perPage);
     #caridata {
       margin-top: 1%;
     }
-
- /* Style The Dropdown Button */
+/* Style The Dropdown Button */
 .dropbtn {
     background-color: white;
     color: grey;
@@ -130,6 +129,7 @@ $pages = ceil($total/$perPage);
         <?php require_once 'sidemenu.php'; ?>  
 
         <!-- main content -->
+
         <div class="col-md-10 col-sm-11 display-table-cell  valign-top">
           <div class="row">
            
@@ -145,13 +145,12 @@ $pages = ceil($total/$perPage);
                 </button>
                 </nav>
 
-              <form action="cari_suratkeluar.php" method="get">
+              <form action="cari_suratmasuk.php" method="get">
                 <input type="text" name="cari" class="hidden-sn hidden-xs" id="header-search-field" placeholder="Search for Something..">
               </form>
               </div>
 
-
-            <div class="col-md-7">
+              <div class="col-md-7">
                 <ul>       
                   <div class="dropdown pull-right">
                   <li class="fixed-width"> 
@@ -182,7 +181,9 @@ $pages = ceil($total/$perPage);
             </header>
         </div>
 
-      <form action="carisk_tgl.php" method="get">
+
+
+       <form action="carism_tgl.php" method="get">
         <div class="row" id="caridata"> 
           <div class="col-sm-4"> <input type="date" class="form-control" name="tgl_surat_mulai" placeholder="Tanggal Mulai" required> </div>
 
@@ -195,53 +196,34 @@ $pages = ceil($total/$perPage);
          <div id="content">
             <nav id="navbar-example2" class="navbar navbar-light bg-light">
               <header>
-                <a href="cetakSuratKeluar.php"> <button type="submit" class="btn btn-success pull-right"  name="submit" value="Cetak Data" id="btncetak"> <span class="glyphicon glyphicon-download-alt"></span> Cetak  </button> </a>
-                 <?php if($_SESSION['status'] == 1
-                    || $_SESSION['status'] == 0  || $_SESSION['status'] == 3  ): ?> <a href="inputSuratKeluar.php">  <button type="submit" class="btn btn-primary pull-right"  name="submit" value="Input Data" id="btninput"> <span class="glyphicon glyphicon-edit"></span> Input </button></a> <?php endif;  ?>
-                <p class="page_title"><a href="lihatSuratKeluar.php">  Data Surat Keluar</a> </p>  
+               <a href="cetakDisposisiStaff.php"> <button type="submit" class="btn btn-success pull-right"  name="submit" value="Cetak Data" id="btncetak"> <span class="glyphicon glyphicon-download-alt"></span> Cetak  </button> </a>
+               
+                <p class="page_title"><a href="lihatdisposisi_staff.php"> Data Disposisi Surat </a></p>  
               </header>
 
             <table class="table table-hover">
               <thead>
                   <tr>
-                    <th scope="col">No. Surat</th>
-                    <th scope="col">Tanggal Surat</th>
-                    <th scope="col">Tujuan Surat</th>
-                    <th scope="col">Isi Surat</th>
-                    <th scope="col">Jenis Surat</th>
-                    <th scope="col">Nomor Agenda</th>
-                    <th scope="col">Keterangan</th>
+                    <th scope="col">Tujuan Disposisi</th>
+                    <th scope="col">Isi Disposisi</th>
                     <th scope="col">Action</th>
                   </tr>
               </thead>
               <tbody>
 
-              <?php $articles = tampilkan_surat_keluar(); ?>
+              <?php $articles = tampilkan_disposisi_staff(); ?>
               <?php while($row = mysqli_fetch_assoc($result2)): ?>
-                <tr>
-                  <td><?=  $row ['no_surat'] ?></td>
-                  <td><?=  $row ['tgl_surat'] ?></td>
-                   <td><?=  $row ['tujuan'] ?></td>
-                  <td><?=  $row ['isi_surat'] ?></td>
-                  <td><?=  $row ['jenis_surat'] ?></td>
-                  <td><?=  $row ['no_agenda'] ?></td>
-                  <td><?=  $row ['keterangan'] ?></td>
-                  <td>
-                   <?php if($_SESSION['status'] == 1
-                    || $_SESSION['status'] == 0 
-                 ): ?>
-                   <a href="editSuratKeluar.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
-                   <a href="hapusAgenda.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger btn-sm" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
-                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-sm" id="edit">  <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                  <?php endif;  ?>
 
-                   <?php if($_SESSION['status'] == 2
-                    || $_SESSION['status'] == 4
-                 ): ?>
-                   <a href="lembardisposisi.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
-                  <a href="detailSuratKeluar.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-sm" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   
+                <tr>
+                  <td><?=  $row ['username'] ?></td>
+                  <td><?=  $row ['isi_disposisi2'] ?></td>
+                  <td>
+                   <?php if($_SESSION['status'] == 2): ?>
+                   <a href="editSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
+                   <a href="hapusSuratMasuk.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
+                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
                   <?php endif;  ?>
+                   <td>
                 </tr>
               <?php endwhile; ?>
               </tbody>
@@ -257,17 +239,15 @@ $pages = ceil($total/$perPage);
           
         </nav>
 
-
-
-        
-       <?php require_once 'footer.php'; ?>
-
+        <?php require_once 'footer.php'; ?>
+ 
 
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="vendor/bootstrap-3.3.7-dist/js/jquery.js"></script>
     <script src="vendor/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    
     <script src="vendor/admin/js/default.js"></script>
   </body>
 </html>

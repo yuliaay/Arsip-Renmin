@@ -11,9 +11,9 @@ $perPage = 9;
 $page = isset($_GET["halaman"]) ? (int)$_GET["halaman"] : 1;
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
-$articles = "SELECT * FROM surat_masuk LIMIT $start, $perPage";
+$articles = "SELECT * FROM surat_masuk ORDER BY id DESC LIMIT $start, $perPage";
 
-$result = mysqli_query($link,"SELECT * FROM surat_masuk");
+$result = mysqli_query($link,"SELECT * FROM surat_masuk ORDER BY id DESC");
 $result2 = mysqli_query($link,$articles);
 $total = mysqli_num_rows($result);
 
@@ -234,90 +234,25 @@ $pages = ceil($total/$perPage);
                   <td>
                    <?php if($_SESSION['status'] == 1 || $_SESSION['status'] == 0 
                  ): ?>
-                   <a href="editSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
-                   <a href="hapusSuratMasuk.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
-                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
+                   <a href="editSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
+                   <a href="hapusSuratMasuk.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger btn-sm" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
+                   <a href="detailSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-sm" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
                   <?php endif;  ?>
 
                    <?php if($_SESSION['status'] == 2 || $_SESSION['status'] == 4
                  ): ?>
-                  <a href="detailSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   <a href="lembardisposisi_atasan.php?id=<?= $row['id'] ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
+                   <a href="lembardisposisi.php?id=<?= $row['id'] ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
+                   <a href="detailSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-sm" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
                    
                   <?php endif;  ?>
+                </td>
                 </tr>
               <?php endwhile; ?>
               </tbody>
             </table>
           </nav>
          </div>
-        <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"><strong>Edit Data</strong></h5>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                      <label for="formGroupExampleInput">Nomor Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nomor Surat" name="no_surat">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Tanggal Surat</label>
-                      <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="Tanggal Surat" name="tgl_surat">
-                    </div>
-                     <div class="form-group">
-                      <label for="formGroupExampleInput">Asal Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Asal Surat" name="asal_surat">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Tanggal Terima</label>
-                      <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="Tanggal Terima" name="tgl_terima">
-                    </div>
-                   <div class="form-group">
-                      <label for="formGroupExampleInput">Isi Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Isi Surat" name="isi_surat">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Jenis Surat</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Jenis Surat" name="jenis_surat">
-                    </div>
-                     <div class="form-group">
-                      <label for="formGroupExampleInput">Nomor Agenda</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nomor Agenda" name="no_agenda">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Disposisi</label>
-                      <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Disposisi" name="disposisi">
-                    </div>
-                    <div class="form-group">
-                      <label for="formGroupExampleInput2">Tanggal Ekspedisi</label>
-                      <input type="date" class="form-control" id="formGroupExampleInput2" placeholder="Tanggal Ekspedisi" name="tgl_ekspedisi">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                  <input type="submit" class="btn btn-primary"  name="submit" value="Simpan">
-                </div>
-              </div>
-            </div>
-          </div>   
-
-        <div class="modal fade" id="hapusmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-body">
-                  <h5><strong>Anda Yakin Ingin Mengapus Data?</strong></h5>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                  <input type="submit" class="btn btn-primary"  name="submit" value="Hapus">
-                </div>
-              </div>
-            </div>
-          </div>   
-
+     
          <nav aria-label="..." class="pagi">
           
           <ul class="pagination">

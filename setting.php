@@ -6,7 +6,7 @@ if(!isset($_SESSION['user'])) {
   header('Location: login.php');
 }
 
-$id = @$_GET['id'];
+
 
 ?>
 
@@ -50,30 +50,54 @@ $id = @$_GET['id'];
            		<p class="page_title"> Setting </p>  
               </header>
 
+                <?php 
 
+                $id = $_SESSION['id'];
+
+                if(isset($id)){
+                  $users = tampilkan_perid_user($id);
+                  while ($row = mysqli_fetch_assoc($users)){
+                    $username = $row ['username'];
+                    $password = $row ['password'];
+                    $nama = $row ['nama'];
+                    $nipnrp = $row ['nipnrp'];
+                    $pangkat = $row ['pangkat'];
+                    $jabatan = $row ['jabatan'];
+                  }
+                }?>
 
 		<table class="table table-hover">
 
 		    <tr>
-		      <td>Nama</td>
-		      <td></td>
-		      <td></td>
-		    </tr>
-		    <tr>
 		      <td>Username</td>
-		      <td>Thornton</td>
-		      <td>@fat</td>
+		      <td><?= $username; ?></td>
+		      <td></td>
 		    </tr>
 		    <tr>
 		      <td>Password</td>
-		      <td>the Bird</td>
+		      <td><?= $password; ?></td>
+		      <td></td>
+		    </tr>
+		    <tr>
+		      <td>Nama</td>
+		      <td><?= $nama; ?></td>
 		      <td>@twitter</td>
 		    </tr>
 		    <tr>
-		      <td>Status</td>
-		      <td>the Bird</td>
+		      <td>NIP/NRP</td>
+		      <td><?= $nipnrp; ?></td>
 		      <td>@twitter</td>
 		    </tr>
+         <tr>
+          <td>Pangkat</td>
+          <td><?= $pangkat; ?></td>
+          <td>@twitter</td>
+        </tr>
+        <tr>
+          <td>Jabatan</td>
+          <td><?= $jabatan; ?></td>
+          <td>@twitter</td>
+        </tr>
 		   </tbody>
 		</table>
 	</nav>

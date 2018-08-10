@@ -10,9 +10,9 @@ $perPage = 9;
 $page = isset($_GET["halaman"]) ? (int)$_GET["halaman"] : 1;
 $start = ($page > 1) ? ($page * $perPage) - $perPage : 0;
 
-$articles = "SELECT * FROM disposisi LIMIT $start, $perPage";
+$articles = "SELECT * FROM share_dspss, dispss, users WHERE share_dspss.kpd_yth = users.id AND share_dspss.id_disposisi = dispss.id_dspss  ORDER BY id DESC LIMIT $start, $perPage";
 
-$result = mysqli_query($link,"SELECT * FROM disposisi");
+$result = mysqli_query($link,"SELECT * FROM share_dspss, dispss, users WHERE share_dspss.kpd_yth = users.id AND share_dspss.id_disposisi = dispss.id_dspss  ORDER BY id DESC");
 $result2 = mysqli_query($link,$articles);
 $total = mysqli_num_rows($result);
 
@@ -196,45 +196,58 @@ $pages = ceil($total/$perPage);
          <div id="content">
             <nav id="navbar-example2" class="navbar navbar-light bg-light">
               <header>
-               <a href="cetakSuratMasuk.php"> <button type="submit" class="btn btn-success pull-right"  name="submit" value="Cetak Data" id="btncetak"> <span class="glyphicon glyphicon-download-alt"></span> Cetak  </button> </a>
-               <?php if($_SESSION['status'] == 1 || $_SESSION['status'] == 0  || $_SESSION['status'] == 3  ): ?> <a href="inputSuratMasuk.php">  <button type="submit" class="btn btn-primary pull-right"  name="submit" value="Input Data" id="btninput"> <span class="glyphicon glyphicon-edit"></span> Input </button></a> <?php endif;  ?>
-                <p class="page_title"><a href="lihatSuratMasuk.php"> Data Surat Masuk </a></p>  
+               <a href="cetakDisposisi.php"> <button type="submit" class="btn btn-success pull-right"  name="submit" value="Cetak Data" id="btncetak"> <span class="glyphicon glyphicon-download-alt"></span> Cetak  </button> </a>
+                <p class="page_title"><a href="lihatdatadisposisi_atasan.php"> Data Disposisi Surat </a></p>  
               </header>
 
             <table class="table table-hover">
               <thead>
                   <tr>
-                    <th scope="col">Tujuan Disposisi</th>
+                    <th scope="col">No.</th>
+                    <th scope="col">Tanggal Disposisi</th>
+                    <th scope="col">Kpd YTH.</th>
                     <th scope="col">Isi Disposisi</th>
-                    <th scope="col">Batas Waktu</th>
                     <th scope="col">Catatan</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                   </tr>
               </thead>
               <tbody>
-
+              <?php  $i = 1; ?>
               <?php $articles = tampilkan_disposisi_atasan(); ?>
               <?php while($row = mysqli_fetch_assoc($result2)): ?>
-              	<?= print_r($row) ?>
+
                 <tr>
-                  <td><?=  $row ['username'] ?></td>
-                  <td><?=  $row ['isi_disposisi'] ?></td>
+                  <td><?=  $i++; ?></td>
                   <td><?=  $row ['batas_waktu'] ?></td>
-                  <td><?=  $row ['catatan'] ?></td>
+                  <td><?=  $row ['pangkat'] ?></td>
+                  <td><?=  $row ['isi_disposisi'] ?></td>
+                  <td><?=  $row ['cttn'] ?></td>
+                  <td><?php  if($row['sttus'] == 0){
+                      echo '<p style="background-color:hsl(0, 70%, 50%); color:white; text-align:center; border-radius:25px; width:85px; font-size:14px; ">Diperiksa</p>';;
+                      } elseif($row['sttus'] == 1){
+                        echo '    <p style="background-color:DodgerBlue; color:white; text-align:center; border-radius:25px; width:85px; font-size:14px;">Diteruskan</p>';
+                      } else {
+                        echo '<p style="background-color:rgb(255, 165, 0); color:white; text-align:center; border-radius:25px; width:85px; font-size:14px;">Diterima</p>';
+                      } ?></td>
                   <td>
-                   <?php if($_SESSION['status'] == 1 || $_SESSION['status'] == 0 
-                 ): ?>
-                   <a href="editSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
-                   <a href="hapusSuratMasuk.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
-                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
+                   <?php if($_SESSION['status'] == 4 ||  $_SESSION['status'] == 2): ?>
+                   <!--<a href="editSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
+                   <a href="hapusSuratMasuk.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger btn-sm" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a> -->
+                      <?php  if($row['sttus'] == 1 || $row['sttus'] == 2): ?>
+                        <a href="DetailDisposisi.php?id=<?php echo $row['id_dspss']; ?>"> <button class="btn btn-primary btn-xs" id="edit">Lihat Disposisi</span></button></a>
+                       <a href="TerusanDisposisi.php?id=<?php echo $row['id_dspss']; ?>"> <button class="btn btn-primary btn-xs" id="edit">Lihat Terusan</span></button></a>
+                      <?php endif;  ?>
                   <?php endif;  ?>
 
-                   <?php if($_SESSION['status'] == 2 || $_SESSION['status'] == 4
-                 ): ?>
-                  <a href="detailSuratMasuk.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   <a href="lembardisposisi_atasan.php?id=<?= $row['id'] ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
-                   
+
+                   <?php if($_SESSION['status'] == 2): ?>
+                        <?php  if($row['sttus'] == 0): ?>
+                           <a href="lembardisposisi_staff.php?id=<?= $row['id_disposisi'] ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
+                        <?php endif; ?>
+                        
                   <?php endif;  ?>
+                   <td>
                 </tr>
               <?php endwhile; ?>
               </tbody>

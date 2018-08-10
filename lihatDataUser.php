@@ -110,22 +110,18 @@ $pages = ceil($total/$perPage);
                   <td><?=  @$row ['jabatan'] ?></td>
                    <td><?=  @$row ['username'] ?></td>
                   <td><?=  @$row ['password'] ?></td>
-                  <td><?=  @$row ['status'] ?></td>
-                  <td>
-                   <?php if($_SESSION['status'] == 1
-                    || $_SESSION['status'] == 0 
-                 ): ?>
-                   <a href="editUser.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
-                   <a href="hapusUser.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
-                  <?php endif;  ?>
-
-                   <?php if($_SESSION['status'] == 2
-                    || $_SESSION['status'] == 4
-                 ): ?>
-                  <a href="detailSuratKeluar.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   <a href="disposisiSuratKeluar.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
-                   
-                  <?php endif;  ?>
+                  
+                  <td><?php if($row['status'] == 0){
+                      echo 'Super Admin';
+                } elseif($row['status'] == 1){
+                  echo 'Urusan  Tata Usaha';
+                } elseif($row['status'] == 2){
+                    echo 'Kasubag / Kasubid';
+                  echo 'Staff TI';
+                } else {echo 'Kabid';}?></td>
+                  <td>     
+                   <a href="editUser.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-sm" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
+                   <a href="hapusUser.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger btn-sm" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a></td>
                 </tr>
               <?php endwhile; ?>
               </tbody>

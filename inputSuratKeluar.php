@@ -145,7 +145,11 @@ if(!empty(trim($no_surat)) && !empty(trim($isi_surat))){
             <label for="jenis_surat" class="col-sm-2 col-form-label">Jenis Surat</label>
             <div class="col-sm-10">
               <select name="jenis_surat" class="form-control" required>
-                <option>Nota Dinas</option> 
+                <option>Nota Dinas</option>
+                <option>Surat Perintah</option>
+                <option>Surat Biasa</option>
+                <option>Surat Telegram</option>
+                <option>Surat Cuti</option> 
               </select>
             </div>
           </div>

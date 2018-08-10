@@ -53,7 +53,7 @@ if(!empty(trim($username)) && !empty(trim($password))){
    echo "
       <script>
           alert('Data berhasil ditambahkan');
-          document.location.href = 'lihatSuratKeluar.php';
+          document.location.href = 'lihatDataUser.php';
        </script>
       ";
   }else { 
@@ -136,10 +136,10 @@ if(!empty(trim($username)) && !empty(trim($password))){
             <label for="status" class="col-sm-2 col-form-label">Klasifikasi User</label>
             <div class="col-sm-10">
               <select name="status" class="form-control" required>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option> 
+                 <option value="3">Staff TI</option>
+                <option value="1">Tata Usaha</option>
+                <option value="2">Kasubag/Kasubid</option>
+                <option value="4">Kabid</option> 
               </select>
             </div>
           </div>

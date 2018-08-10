@@ -7,14 +7,37 @@ if(!isset($_SESSION['user'])) {
 }
 
 if(isset($_POST['submit'])) {
-  $id_surat = $_POST['id_surat'];
-  $id_user = $_SESSION['id'];
-  $tujuan = $_POST['tujuan'];
-  $isi = $_POST['isi'];
-  $batas_waktu = $_POST['batas_waktu'];
   $catatan = $_POST['catatan'];
-  tambah_disposisi_atasan($id_surat, $id_user, $tujuan, $isi, $batas_waktu, $catatan);
+  $kpd_yth2 = $_POST['kpd_yth2'];
+  $id = $_POST['id_disposisi'];
+
+if(!empty(trim($kpd_yth2)) && !empty(trim($catatan))){
+
+  if(update_dispss($catatan, $id)){ 
+   tambah_dispss_share_staff($kpd_yth2, $id);
+   echo "
+      <script>
+          alert('Data berhasil ditambahkan');
+          document.location.href = 'lihatDataDisposisi.php';
+       </script>
+      ";
+  }else { 
+     echo "
+      <script>
+          alert('Ada masalah saat menambahkan data');
+       </script>
+      ";
+  }
+}else{ 
+      echo "
+      <script>
+          alert('nomor surat dan perihal wajib diisi');
+          
+       </script>
+      ";
+  }
 }
+
 
 ?>
 
@@ -71,15 +94,17 @@ if(isset($_POST['submit'])) {
           </header>
 
       
-         <form class= "formSM" method="post" action="lembardisposisi.php?id=<?= $_GET['id'] ?>" enctype="multipart/form-data">
-          <input type="hidden" name="id_surat" value="<?= $_GET['id'] ?>">
+         <form class= "formSM" method="post" action="lembardisposisi_staff.php?id=<?= $_GET['id'] ?>" enctype="multipart/form-data">
+          
+          <input type="hidden" name="id_disposisi" value="<?= $_GET['id'] ?>">
+
           <div class="form-group row">
             <label for="no_surat" class="col-sm-2 col-form-label">Kepada YTH</label>
               <div class="col-sm-10">
-              <select name="tujuan" class="form-control" required>
-                <option value="7">Kasubag Renmin</option>
-                <option>Kasubid Tekinfo</option>
-                <option>Kasubid Tekkom</option> 
+              <select name="kpd_yth2" class="form-control" required>
+                <option value="4">Kaurmin</option>
+                <option>Kaurtekom</option>
+                <option>Kaurfo</option> 
               </select>
             </div>
           </div>
@@ -87,11 +112,11 @@ if(isset($_POST['submit'])) {
          <div class="form-group row">
             <label for="isi" class="col-sm-2 col-form-label">Isi Disposisi</label>
             <div class="col-sm-10">
-              <textarea class="form-control" name="isi" rows="3" placeholder="Isi Disposisi" required></textarea>
+              <textarea class="form-control" name="catatan" rows="3" placeholder="Isi Disposisi" required></textarea>
             </div>
           </div>
 
-          <div class="form-group row">
+<!--          <div class="form-group row">
             <label for="isi" class="col-sm-2 col-form-label">Catatan</label>
             <div class="col-sm-10">
               <textarea class="form-control" name="catatan" rows="3" placeholder="Isi Disposisi"></textarea>
@@ -103,8 +128,9 @@ if(isset($_POST['submit'])) {
             <div class="col-sm-10">
               <input type="date" class="form-control" name="batas_waktu" placeholder="Batas Waktu" required>
             </div>
-          </div>
+          </div> -->
 
+          
        <Button type="submit" class="btn btn-primary pull-right"  name="submit" value="Simpan Data" id="btnsve">Simpan Data</Button>
 
           </br>

@@ -15,13 +15,37 @@ function tambah_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $is
 	return run($query);
 }
 
-function tambah_disposisi_atasan($id_surat, $id_user, $tujuan, $isi, $batas_waktu, $catatan) {
-  $id_surat = escape($id_surat);
+//function tambah_disposisi_atasan($id_surat, $id_user, $tujuan, $isi, $batas_waktu, $catatan) {
+  //$id_surat = escape($id_surat);
 
-  $query = "INSERT INTO disposisi (id_surat, id_user, kpd_yth, isi_disposisi, batas_waktu, catatan) VALUES ('$id_surat', '$id_user', '$tujuan', '$isi', '$batas_waktu', '$catatan')";
+ // $query = "INSERT INTO disposisi (id_surat, id_user, kpd_yth, isi_disposisi, batas_waktu, catatan, status) VALUES ('$id_surat', '$id_user', '$tujuan', '$isi', '$batas_waktu', '$catatan', '1')";
+ // return run($query);
+//}
+
+function tambah_dispss ($isi, $batas_waktu){
+   $query = "INSERT INTO dispss (isi_disposisi, batas_waktu) VALUES ('$isi', '$batas_waktu')";
   return run($query);
 }
 
+function update_dispss ($catatan, $id){
+   $query = "UPDATE dispss SET cttn='$catatan' WHERE id_dspss='$id'";
+  return run($query);
+}
+
+function tambah_dispss_share ($id_surat, $kpd_yth){
+   $query = "INSERT INTO share_dspss (id_surat,  kpd_yth, sttus) VALUES ('$id_surat', '$kpd_yth', '0')";
+  return run($query);
+}
+
+//function tambah_disposisi_staff($id, $isi_dss) {
+//  $query = "INSERT INTO disposisi_staff (id_disposisi, isi_disposisi2) VALUES ('$id','$isi_dss')";
+//  return run($query);
+//}
+
+function tambah_dispss_share_staff ($kpd_yth2,  $id){
+   $query = "UPDATE share_dspss SET  kpd_yth2='$kpd_yth2', sttus='1' WHERE id_disposisi='$id'";
+  return run($query);
+}
 
 function tambah_surat_keluar($no_surat, $tgl_surat, $tujuan,  $isi_surat, $jenis_surat, $no_agenda, $keterangan, $uploader, $file_surat_keluar){
 	$isi_surat = escape($isi_surat);
@@ -78,17 +102,17 @@ global $link;
 }
 
 function tampilkan_surat_masuk(){
-	$query = "SELECT * FROM surat_masuk";
+	$query = "SELECT * FROM surat_masuk ORDER BY id DESC";
 	return result($query);
 }
 
 function tampilkan_surat_keluar(){
-	$query = "SELECT * FROM surat_keluar";
+	$query = "SELECT * FROM surat_keluar ORDER BY id DESC";
 	return result($query);
 }
 
 function tampilkan_agenda(){
-	$query = "SELECT * FROM agenda";
+	$query = "SELECT * FROM agenda ORDER BY id DESC";
 	return result($query);
 }
 
@@ -121,18 +145,31 @@ function tampilkan_user(){
 	$query = "SELECT * FROM users";
 	return result($query);
 }
+
 function tampilkan_perid_user($id){
 	$query = "SELECT * FROM users WHERE id=$id";
 	return result($query);
 }
 
-function tampilkan_disposisi_atasan(){
-  $query = "SELECT * FROM disposisi, users WHERE disposisi.id_user = users.id";
-  global $link;
-  if($result = mysqli_query($link, $query)) {
-    return $result;
-  }
+function tampilkan_td_id($id){
+$query = "SELECT * FROM share_dspss, dispss, users, surat_masuk WHERE share_dspss.id_disposisi = dispss.id_dspss AND share_dspss.kpd_yth2 = users.id AND share_dspss.id_surat = surat_masuk.id AND id_disposisi='$id'";
+  return result($query);
 }
+
+function tampilkan_dd_id($id){
+$query = "SELECT * FROM share_dspss, dispss, users, surat_masuk WHERE share_dspss.id_disposisi = dispss.id_dspss AND share_dspss.kpd_yth = users.id AND share_dspss.id_surat = surat_masuk.id AND id_disposisi='$id'";
+  return result($query);
+}
+
+function tampilkan_disposisi_atasan(){
+  $query = "SELECT * FROM share_dspss, dispss, users WHERE share_dspss.kpd_yth = users.id AND share_dspss.id_disposisi = dispss.id_dspss  ORDER BY id DESC";
+  return result($query);
+  }
+
+function tampilkan_disposisi_staff(){
+  $query = "SELECT * FROM disposisi_staff, users WHERE disposisi_staff.kpd_yth2 = users.id ";
+  return result($query);
+  }
 
 
 function tampilkan_perid_suratkeluar($id){
@@ -343,10 +380,9 @@ function upload_surat_keluar() {
   //return false;
  // }
 
-  $ekstensiFileValid = ['jpg', 'jpeg', 'png', 'pdf'];
-  $ekstensiFile = explode('.', $namaFile);
-  $ekstensiFile = strtolower(end($ekstensiFile));
-    if(in_array($ekstensiFile, $ekstensiFileValid)){
+  $ekstensiFileValid = ['jpg', 'jpeg', 'png', 'pdf', 'JPG', 'JPEG', 'PDF', 'doc'];
+  $ekstensiFile = pathinfo('$namaFile', PATHINFO_EXTENSION);
+    if(!in_array($ekstensiFile, $ekstensiFileValid)){
       echo "
       <script>
           alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf'); 
@@ -370,7 +406,8 @@ function upload_surat_keluar() {
     $namaFileBaru = uniqid();
     $namaFileBaru .= '.';
     $namaFileBaru .= $ekstensiFile;
-    move_uploaded_file($tmpName, 'ArsipRenmin/file_upload/file_surat_keluar' . $namaFileBaru);
+
+    move_uploaded_file($tmpName, '../file_upload/file_surat_keluar/' . $namaFileBaru);
     return $namaFileBaru;
   }
 

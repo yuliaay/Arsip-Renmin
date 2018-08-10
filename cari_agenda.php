@@ -244,16 +244,16 @@ if(isset($_GET['cari'])){
                    <?php if($_SESSION['status'] == 1
                     || $_SESSION['status'] == 0 
                  ): ?>
-                   <a href="editAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
-                   <a href="hapusAgenda.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
-                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
+                   <a href="editAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-xs" id="edit"> <span class="glyphicon glyphicon-pencil"></span></button></a>
+                   <a href="hapusAgenda.php?id=<?php echo $row['id']; ?>" onClick="return confirm('Apakah Anda Yakin Ingin Menghapus Data?')"><button class="btn btn-danger btn-xs" id="hapus"> <span class="glyphicon glyphicon-trash"></span></button></a>
+                   <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-xs" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
                   <?php endif;  ?>
 
                    <?php if($_SESSION['status'] == 2
                     || $_SESSION['status'] == 4
                  ): ?>
-                  <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
-                   <a href="disposisiAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
+                  <a href="detailAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-primary btn-xs" id="edit"> <span class="glyphicon glyphicon-zoom-in"></span></button></a>
+                   <a href="disposisiAgenda.php?id=<?php echo $row['id']; ?>"> <button class="btn btn-success btn-xs" id="edit"> <span class="glyphicon glyphicon-edit"></span></button></a>
                    
                   <?php endif;  ?>
                  </td>

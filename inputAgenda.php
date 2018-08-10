@@ -178,7 +178,7 @@ if(!empty(trim($nomor)) && !empty(trim($perihal))){
           <div class="form-group row">
             <label for="pakaian" class="col-sm-2 col-form-label">Pakaian</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="pakaian" placeholder="pakaian" required>
+              <input type="text" class="form-control" name="pakaian" placeholder="Pakaian" required>
             </div>
           </div>
 
