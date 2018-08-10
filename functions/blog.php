@@ -10,7 +10,7 @@ function escape($data){
 function tambah_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_surat, $jenis_surat, $no_agenda, $disposisi, $tgl_ekspedisi ,$uploader, $file_surat_masuk){
 	$isi_surat = escape($isi_surat);
 	$disposisi = escape($disposisi);
-	
+
 	$query = "INSERT INTO surat_masuk (no_surat, tgl_surat, asal_surat, tgl_terima, isi_surat, jenis_surat, no_agenda, disposisi, tgl_ekspedisi, uploader, file_surat_masuk) VALUES ('$no_surat', '$tgl_surat', '$asal_surat', '$tgl_terima', '$isi_surat', '$jenis_surat', '$no_agenda', '$disposisi', '$tgl_ekspedisi','$uploader', '$file_surat_masuk')";
 	return run($query);
 }
@@ -50,7 +50,7 @@ function tambah_dispss_share_staff ($kpd_yth2,  $id){
 function tambah_surat_keluar($no_surat, $tgl_surat, $tujuan,  $isi_surat, $jenis_surat, $no_agenda, $keterangan, $uploader, $file_surat_keluar){
 	$isi_surat = escape($isi_surat);
 	$keterangan = escape($keterangan);
-	
+
 	$q1 = "INSERT INTO surat_keluar (no_surat, tgl_surat, tujuan, isi_surat, jenis_surat, no_agenda, keterangan, uploader, file_surat_keluar) VALUES ('$no_surat', '$tgl_surat', '$tujuan', '$isi_surat', '$jenis_surat', '$no_agenda', '$keterangan','$uploader', '$file_surat_keluar')";
 	return run($q1);
 }
@@ -58,7 +58,7 @@ function tambah_surat_keluar($no_surat, $tgl_surat, $tujuan,  $isi_surat, $jenis
 function tambah_user($username, $password, $nama,  $status, $nipnrp, $pangkat, $jabatan){
 	$username = escape($username);
 	$password = escape($password);
-	
+
 	$query = "INSERT INTO users (username, password, nama, status, nipnrp, pangkat, jabatan) VALUES ('$username', '$password', '$nama', '$status', '$nipnrp', '$pangkat', '$jabatan')";
 	return run($query);
 }
@@ -66,7 +66,7 @@ function tambah_user($username, $password, $nama,  $status, $nipnrp, $pangkat, $
 function tambah_agenda($nomor, $tgl_surat, $asal_surat, $tgl_terima, $perihal, $giat, $tgl_giat, $tempat, $pakaian, $uploader, $file_agenda){
 	$isi_surat = escape($perihal);
 	$disposisi = escape($giat);
-	
+
 	$query = "INSERT INTO agenda (nomor, tgl_surat, asal_surat, tgl_terima, perihal, giat, tgl_giat, tempat, pakaian, uploader, file_agenda) VALUES ('$nomor', '$tgl_surat', '$asal_surat', '$tgl_terima', '$perihal', '$giat', '$tgl_giat', '$tempat', '$pakaian', '$uploader', '$file_agenda')";
 	return run($query);
 }
@@ -87,14 +87,14 @@ function tambah_notifikasi_ag(){
 }
 
 function run($query){
-	global $link; 
+	global $link;
 
 	if(mysqli_query($link, $query)) return true;
-	else return false; 
+	else return false;
 }
 
 function result($query){
-global $link; 
+global $link;
  if($result = mysqli_query($link, $query) or die ('gagal menampilkan data')){
  	return $result;
   }
@@ -183,7 +183,7 @@ function tampilkan_perid_agenda($id){
 }
 
 function hasil_cari_agenda($cari){
- 
+
  	$query = "SELECT * FROM agenda WHERE asal_surat LIKE '%$cari%' OR perihal LIKE '%$cari%' OR giat LIKE '%$cari%' OR tempat LIKE '%$cari%' OR pakaian LIKE '%$cari%'";
 	return result($query);
  }
@@ -217,32 +217,32 @@ function cari_agenda_tgl($tgl_surat_mulai, $tgl_surat_selesai){
 
 
 function edit_data_agenda($nomor, $tgl_surat, $asal_surat, $tgl_terima, $perihal, $giat, $tgl_giat, $tempat, $pakaian, $id){
-	$query = "UPDATE agenda SET 
-		nomor='$nomor', 
-		tgl_surat='$tgl_surat', 
-		asal_surat='$asal_surat', 
-		tgl_terima='$tgl_terima', 
-		perihal='$perihal', 
-		giat='$giat', 
-		tgl_giat='$tgl_giat', 
-		tempat='$tempat', 
+	$query = "UPDATE agenda SET
+		nomor='$nomor',
+		tgl_surat='$tgl_surat',
+		asal_surat='$asal_surat',
+		tgl_terima='$tgl_terima',
+		perihal='$perihal',
+		giat='$giat',
+		tgl_giat='$tgl_giat',
+		tempat='$tempat',
 		pakaian='$pakaian' WHERE
 		id=$id";
 	return run($query);
-}	
+}
 
 
 function edit_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_surat, $jenis_surat, $no_agenda, $disposisi, $tgl_ekspedisi, $id){
-	$query = "UPDATE surat_masuk SET 
-		
-		no_surat='$no_surat', 
-		tgl_surat='$tgl_surat', 
-		asal_surat='$asal_surat', 
-		tgl_terima='$tgl_terima', 
-		isi_surat='$isi_surat', 
-		jenis_surat='$jenis_surat', 
-		no_agenda='$no_agenda', 
-		disposisi='$disposisi', 
+	$query = "UPDATE surat_masuk SET
+
+		no_surat='$no_surat',
+		tgl_surat='$tgl_surat',
+		asal_surat='$asal_surat',
+		tgl_terima='$tgl_terima',
+		isi_surat='$isi_surat',
+		jenis_surat='$jenis_surat',
+		no_agenda='$no_agenda',
+		disposisi='$disposisi',
 		tgl_ekspedisi='$tgl_ekspedisi' WHERE
 		id=$id";
 	return run($query);
@@ -250,13 +250,13 @@ function edit_surat_masuk($no_surat, $tgl_surat, $asal_surat, $tgl_terima, $isi_
 
 
 function edit_surat_keluar($no_surat, $tgl_surat, $tujuan, $isi_surat, $jenis_surat, $no_agenda, $keterangan, $id){
-	$query = "UPDATE surat_keluar SET 
-		no_surat='$no_surat', 
-		tgl_surat='$tgl_surat', 
-		tujuan='$tujuan', 
-		isi_surat='$isi_surat', 
-		jenis_surat='$jenis_surat', 
-		no_agenda='$no_agenda', 
+	$query = "UPDATE surat_keluar SET
+		no_surat='$no_surat',
+		tgl_surat='$tgl_surat',
+		tujuan='$tujuan',
+		isi_surat='$isi_surat',
+		jenis_surat='$jenis_surat',
+		no_agenda='$no_agenda',
 		keterangan='$keterangan' WHERE
 		id=$id";
 	return run($query);
@@ -264,13 +264,13 @@ function edit_surat_keluar($no_surat, $tgl_surat, $tujuan, $isi_surat, $jenis_su
 
 
 function edit_data_user($username, $password, $nama, $status, $nipnrp, $pangkat, $jabatan, $id){
-	$query = "UPDATE users SET 
-		username='$username', 
-		password='$password', 
-		nama='$nama', 
-		status='$status', 
-		nipnrp='$nipnrp', 
-		pangkat='$pangkat', 
+	$query = "UPDATE users SET
+		username='$username',
+		password='$password',
+		nama='$nama',
+		status='$status',
+		nipnrp='$nipnrp',
+		pangkat='$pangkat',
 		jabatan='$jabatan' WHERE
 		id=$id";
 	return run($query);
@@ -283,7 +283,7 @@ function upload_agenda() {
   $tmpName = @$_FILE['file_agenda']['tmp_name'];
   //cek apakah tidak ada gambar yang diupload
   //if($error === 4){
-    //echo "<script> 
+    //echo "<script>
       //    alert('pilih gambar terlebih dahulu');
       //</script>";
   //return false;
@@ -295,23 +295,23 @@ function upload_agenda() {
     if(in_array($ekstensiFile, $ekstensiFileValid)){
       echo "
       <script>
-          alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf'); 
+          alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf');
        </script>
       ";
       return false;
     }
 
-    //cek jika ukurannya terlalu besar 
+    //cek jika ukurannya terlalu besar
     if($ukuranFile > 3000000){
        echo "
       <script>
-          alert('Ukuran file terlalu besar (Maks. 3 MB)'); 
+          alert('Ukuran file terlalu besar (Maks. 3 MB)');
        </script>
       ";
       return false;
     }
 
-    //lolos pengecekan, gambar siap diupload  
+    //lolos pengecekan, gambar siap diupload
     //generate nama baru
     $namaFileBaru = uniqid();
     $namaFileBaru .= '.';
@@ -321,47 +321,51 @@ function upload_agenda() {
   }
 
 function upload_surat_masuk() {
-  $namaFile = @$_FILE ['file_surat_masuk']['name'];
-  $ukuranFile = @$_FILE ['file_surat_masuk']['size'];
-  $error = @$_FILE ['file_surat_masuk']['error'];
-  $tmpName = @$_FILE['file_surat_masuk']['tmp_name'];
+	// ## Tidak dibenarkan lagi mennggunakan @$_FILE yang benar $_FILES ##
+  $namaFile   = $_FILES['file_surat_masuk']['name'];
+  $ukuranFile = $_FILES['file_surat_masuk']['size'];
+  $error      = $_FILES['file_surat_masuk']['error'];
+  $tmpName    = $_FILES['file_surat_masuk']['tmp_name'];
 
   //cek apakah tidak ada gambar yang diupload
   //if($error === 4){
-    //echo "<script> 
+    //echo "<script>
       //    alert('pilih gambar terlebih dahulu');
       //</script>";
   //return false;
  // }
 
   $ekstensiFileValid = ['jpg', 'jpeg', 'png', 'pdf'];
-  $ekstensiFile = explode('.', $namaFile);
-  $ekstensiFile = strtolower(end($ekstensiFile));
-    if(in_array($ekstensiFile, $ekstensiFileValid)){
+	$ekstensiFile = pathinfo($namaFile, PATHINFO_EXTENSION);
+
+	// ## In_array mengecek apakah ekstensi adalah valid, seharusnya negasi ! , kan yang dikasih peringatan dalam if yg tidak valid
+    if(!in_array($ekstensiFile, $ekstensiFileValid)){
       echo "
       <script>
-          alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf'); 
+          alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf');
        </script>
       ";
       return false;
     }
 
-    //cek jika ukurannya terlalu besar 
+    //cek jika ukurannya terlalu besar
     if($ukuranFile > 3000000){
        echo "
       <script>
-          alert('Ukuran file terlalu besar (Maks. 3 MB)'); 
+          alert('Ukuran file terlalu besar (Maks. 3 MB)');
        </script>
       ";
       return false;
     }
 
-    //lolos pengecekan, gambar siap diupload  
+    //lolos pengecekan, gambar siap diupload
     //generate nama baru
     $namaFileBaru = uniqid();
     $namaFileBaru .= '.';
     $namaFileBaru .= $ekstensiFile;
-    move_uploaded_file($tmpName, 'ArsipRenmin/file_upload/file_surat_masuk' . $namaFileBaru);
+		// ## Direktori nya aku benarkan sedikit oke. Patokannya darimana fungsi ini dipanggil, kan dipanngil di inputSuratMasuk.php (diluar)
+		// ## Karena diluar, lansung masuk ke file_upload/file_surat_masuk/
+		move_uploaded_file($tmpName, 'file_upload/file_surat_masuk/' . $namaFileBaru);
     return $namaFileBaru;
   }
 
@@ -374,7 +378,7 @@ function upload_surat_keluar() {
 
   //cek apakah tidak ada gambar yang diupload
   //if($error === 4){
-    //echo "<script> 
+    //echo "<script>
       //    alert('pilih gambar terlebih dahulu');
       //</script>";
   //return false;
@@ -385,23 +389,23 @@ function upload_surat_keluar() {
     if(!in_array($ekstensiFile, $ekstensiFileValid)){
       echo "
       <script>
-          alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf'); 
+          alert('Format file tidak sesuai, silahkan upload file dalam bentuk jpg/pdf');
        </script>
       ";
       return false;
     }
 
-    //cek jika ukurannya terlalu besar 
+    //cek jika ukurannya terlalu besar
     if($ukuranFile > 3000000){
        echo "
       <script>
-          alert('Ukuran file terlalu besar (Maks. 3 MB)'); 
+          alert('Ukuran file terlalu besar (Maks. 3 MB)');
        </script>
       ";
       return false;
     }
 
-    //lolos pengecekan, gambar siap diupload  
+    //lolos pengecekan, gambar siap diupload
     //generate nama baru
     $namaFileBaru = uniqid();
     $namaFileBaru .= '.';
